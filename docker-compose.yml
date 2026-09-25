@@ -1,0 +1,49 @@
+# ============================================================
+# Lerna — Assessment Module · full stack
+#   api       → REST API (port 8002) — for your platform/frontend
+#   ui        → Streamlit testing interface (port 8501)
+# Both share the same image, the same .env and one persistent volume.
+#
+# Usage:
+#   cp .env.example .env   → fill real keys
+#   docker compose up -d --build
+# ============================================================
+services:
+  api:
+    build: .
+    container_name: lerna-api
+    restart: unless-stopped
+    ports:
+      - "8002:8002"
+    env_file: .env
+    environment:
+      ASSESS_ENV: production
+      ASSESS_DB_URL: sqlite:////app/data/assessment.db
+    volumes:
+      - lerna_data:/app/data
+    command: uvicorn app.api:app --host 0.0.0.0 --port 8002 --workers 2
+
+  ui:
+    build: .
+    container_name: lerna-ui
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    env_file: .env
+    environment:
+      ASSESS_ENV: production
+      ASSESS_DB_URL: sqlite:////app/data/assessment.db
+    volumes:
+      - lerna_data:/app/data
+    command: >
+      streamlit run streamlit_app.py
+      --server.port 8501
+      --server.address 0.0.0.0
+      --server.headless true
+      --server.fileWatcherType none
+      --browser.gatherUsageStats false
+    depends_on:
+      - api
+
+volumes:
+  lerna_data:

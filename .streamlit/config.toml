@@ -1,0 +1,12 @@
+# Lerna Streamlit hardening (container-safe)
+[server]
+headless = true
+address = "0.0.0.0"
+port = 8501
+fileWatcherType = "none"
+enableCORS = false
+enableXsrfProtection = true
+maxUploadSize = 30
+
+[browser]
+gatherUsageStats = false

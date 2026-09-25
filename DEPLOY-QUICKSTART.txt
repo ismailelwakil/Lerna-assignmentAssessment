@@ -1,0 +1,10 @@
+Lerna — Assessment Module · DEPLOYMENT BUILD
+============================================
+Read DEPLOYMENT.md for the full guide. Fastest path:
+
+  1. cp .env.example .env  → add keys + ASSESS_SECRET + ASSESS_ENV=production
+  2. docker compose up -d --build
+  3. API http://server:8002 (docs /docs) · UI http://server:8501
+
+⚠️ This build INCLUDES a working .env (real provider keys) — do NOT
+   share/commit/upload this archive.

@@ -1,0 +1,26 @@
+# /etc/systemd/system/lerna-ui.service
+# Lerna Assessment Module — Streamlit testing UI
+[Unit]
+Description=Lerna Assessment UI (Streamlit)
+After=network.target lerna-api.service
+
+[Service]
+Type=simple
+User=lerna
+Group=lerna
+WorkingDirectory=/opt/lerna
+EnvironmentFile=/opt/lerna/.env
+ExecStart=/opt/lerna/.venv/bin/streamlit run streamlit_app.py \
+    --server.port 8501 --server.address 127.0.0.1 \
+    --server.headless true --server.fileWatcherType none
+Restart=always
+RestartSec=5
+
+# hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/opt/lerna/data
+
+[Install]
+WantedBy=multi-user.target
